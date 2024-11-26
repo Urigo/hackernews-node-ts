@@ -1,5 +1,5 @@
 import { createSchema } from "graphql-yoga";
-import type { Link } from "@prisma/client";
+import type { Link, Comment } from "@prisma/client";
 import type { GraphQLContext } from "./context";
 
 const typeDefinitions = /* GraphQL */ `
@@ -25,6 +25,7 @@ const typeDefinitions = /* GraphQL */ `
   type Comment {
     id: ID!
     body: String!
+    link: Link!
   }
 `;
 
@@ -41,14 +42,14 @@ const resolvers = {
       context: GraphQLContext,
     ) {
       return context.prisma.comment.findUnique({
-        where: { id: parseInt(args.id) }
-      })
+        where: { id: parseInt(args.id) },
+      });
     },
     async link(parent: unknown, args: { id: string }, context: GraphQLContext) {
       return context.prisma.link.findUnique({
         where: { id: parseInt(args.id) },
       });
-    }
+    },
   },
   Mutation: {
     async postLink(
@@ -88,6 +89,15 @@ const resolvers = {
       return context.prisma.comment.findMany({
         where: {
           linkId: parent.id,
+        },
+      });
+    },
+  },
+  Comment: {
+    link(parent: Comment, _arg: {}, context: GraphQLContext) {
+      return context.prisma.link.findUniqueOrThrow({
+        where: {
+          id: parent.linkId,
         },
       });
     },
