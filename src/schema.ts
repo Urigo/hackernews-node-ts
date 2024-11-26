@@ -3,3 +3,9 @@ const typeDefinitions = /* GraphQL */ `
     hello: String!
   }
 `;
+
+const resolvers = {
+  Query: {
+    hello: () => "Hello World!",
+  },
+};
