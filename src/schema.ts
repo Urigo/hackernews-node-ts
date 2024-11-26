@@ -1,5 +1,5 @@
 import { createSchema } from "graphql-yoga";
-import type { Link } from "@prisma/client";
+import type { Link, Comment } from "@prisma/client";
 import type { GraphQLContext } from "./context";
 
 const typeDefinitions = /* GraphQL */ `
@@ -26,6 +26,7 @@ const typeDefinitions = /* GraphQL */ `
     id: ID!
     createdAt: String!
     body: String!
+    link: Link!
   }
 `;
 
@@ -90,6 +91,15 @@ const resolvers = {
         orderBy: { createdAt: "desc" },
         where: {
           linkId: parent.id,
+        },
+      });
+    },
+  },
+  Comment: {
+    link(parent: Comment, _arg: {}, context: GraphQLContext) {
+      return context.prisma.link.findUniqueOrThrow({
+        where: {
+          id: parent.linkId,
         },
       });
     },
