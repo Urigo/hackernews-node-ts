@@ -42,20 +42,20 @@ const resolvers = {
   Mutation: {
     postLink: (parent: unknown, args: { description: string; url: string }) => {
       // 1
-      let idCount = links.length
- 
+      let idCount = links.length;
+
       // 2
       const link: Link = {
         id: `link-${idCount}`,
         description: args.description,
-        url: args.url
-      }
- 
-      links.push(link)
- 
-      return link
-    }
-  },  
+        url: args.url,
+      };
+
+      links.push(link);
+
+      return link;
+    },
+  },
   // 4
   Link: {
     id: (parent: Link) => parent.id,
