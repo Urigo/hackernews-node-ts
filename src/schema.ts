@@ -34,6 +34,15 @@ const resolvers = {
     feed: async (parent: unknown, args: {}, context: GraphQLContext) => {
       return context.prisma.link.findMany();
     },
+    async comment(
+      parent: unknown,
+      args: { id: string },
+      context: GraphQLContext,
+    ) {
+      return context.prisma.comment.findUnique({
+        where: { id: parseInt(args.id) },
+      });
+    },
   },
   Mutation: {
     async postLink(
