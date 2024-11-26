@@ -18,6 +18,7 @@ const typeDefinitions = /* GraphQL */ `
     id: ID!
     description: String!
     url: String!
+    comments: [Comment!]!
   }
 
   type Comment {
@@ -78,6 +79,14 @@ const resolvers = {
     id: (parent: Link) => parent.id,
     description: (parent: Link) => parent.description,
     url: (parent: Link) => parent.url,
+    comments: (parent: Link, args: {}, context: GraphQLContext) => {
+      return context.prisma.comment.findMany({
+        orderBy: { createdAt: "desc" },
+        where: {
+          linkId: parent.id,
+        },
+      });
+    },
   },
 };
 
