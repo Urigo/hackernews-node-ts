@@ -7,6 +7,7 @@ const typeDefinitions = /* GraphQL */ `
     info: String!
     feed: [Link!]!
     comment(id: ID!): Comment
+    link(id: ID!): Link
   }
   
   type Mutation {
@@ -38,6 +39,11 @@ const resolvers = {
       return context.prisma.comment.findUnique({
         where: { id: parseInt(args.id) }
       })
+    },
+    async link(parent: unknown, args: { id: string }, context: GraphQLContext) {
+      return context.prisma.link.findUnique({
+        where: { id: parseInt(args.id) },
+      });
     }
   },
   Mutation: {
