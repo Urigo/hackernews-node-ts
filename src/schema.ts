@@ -4,6 +4,13 @@ import { Prisma } from "@prisma/client";
 import { GraphQLError } from "graphql";
 import type { GraphQLContext } from "./context";
 
+const parseIntSafe = (value: string): number | null => {
+  if (/^(\d+)$/.test(value)) {
+    return parseInt(value, 10);
+  }
+  return null;
+};
+
 const typeDefinitions = /* GraphQL */ `
   type Query {
     info: String!
@@ -73,6 +80,15 @@ const resolvers = {
       args: { linkId: string; body: string },
       context: GraphQLContext,
     ) {
+      const linkId = parseIntSafe(args.linkId);
+      if (linkId === null) {
+        return Promise.reject(
+          new GraphQLError(
+            `Cannot post comment on non-existing link with id '${args.linkId}'.`,
+          ),
+        );
+      }
+
       const newComment = await context.prisma.comment
         .create({
           data: {
