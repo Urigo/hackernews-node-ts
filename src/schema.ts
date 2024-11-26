@@ -48,6 +48,20 @@ const resolvers = {
       });
       return newLink;
     },
+    async postCommentOnLink(
+      parent: unknown,
+      args: { linkId: string; body: string },
+      context: GraphQLContext,
+    ) {
+      const newComment = await context.prisma.comment.create({
+        data: {
+          linkId: parseInt(args.linkId),
+          body: args.body,
+        },
+      });
+
+      return newComment;
+    },
   },
   // 4
   Link: {
