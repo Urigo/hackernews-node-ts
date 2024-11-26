@@ -1,5 +1,7 @@
 import { createSchema } from 'graphql-yoga'
 import type { Link, Comment } from '@prisma/client'
+import { Prisma } from '@prisma/client'
+import { GraphQLError } from 'graphql'
 import type { GraphQLContext } from './context'
 
 const typeDefinitions = /* GraphQL */ `
@@ -71,6 +73,13 @@ const resolvers = {
           linkId: parseInt(args.linkId),
           body: args.body
         }
+      }).catch((err: unknown) => {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2003') {
+          return Promise.reject(
+            new GraphQLError(`Cannot post comment on non-existing link with id '${args.linkId}'.`)
+          )
+        }
+        return Promise.reject(err)
       })
  
       return newComment
