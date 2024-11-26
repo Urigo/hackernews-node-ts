@@ -6,16 +6,24 @@ const typeDefinitions = /* GraphQL */ `
   type Query {
     info: String!
     feed: [Link!]!
+    comment(id: ID!): Comment
   }
 
   type Mutation {
     postLink(url: String!, description: String!): Link!
+    postCommentOnLink(linkId: ID!, body: String!): Comment!
   }
 
   type Link {
     id: ID!
     description: String!
     url: String!
+  }
+
+  type Comment {
+    id: ID!
+    createdAt: String!
+    body: String!
   }
 `;
 
