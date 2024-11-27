@@ -24,6 +24,15 @@ const applyTakeConstraints = (params: {
   return params.value;
 };
 
+const applySkipConstraints = (value: number) => {
+  if (value < 0) {
+    throw new GraphQLError(
+      `'skip' argument value '${value}' is invalid, value must be positive.`,
+    );
+  }
+  return value;
+};
+
 const typeDefinitions = /* GraphQL */ `
   type Query {
     info: String!
@@ -76,9 +85,11 @@ const resolvers = {
         value: args.take ?? 30,
       });
 
+      const skip = applySkipConstraints(args.skip ?? 0);
+
       return context.prisma.link.findMany({
         where,
-        skip: args.skip,
+        skip,
         take,
       });
     },
