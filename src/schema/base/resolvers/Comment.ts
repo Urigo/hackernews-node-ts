@@ -14,7 +14,11 @@ export const Comment: CommentResolvers = {
     /* Comment.createdAt resolver is required because Comment.createdAt and CommentMapper.createdAt are not compatible */
     return createdAt;
   },
-  link: async (_parent, _arg, _ctx) => {
-    /* Comment.link resolver is required because Comment.link exists but CommentMapper.link does not */
+  link(parent, _arg, context) {
+    return context.prisma.link.findUniqueOrThrow({
+      where: {
+        id: parent.linkId,
+      },
+    });
   },
 };
