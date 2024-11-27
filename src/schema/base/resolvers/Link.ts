@@ -10,7 +10,16 @@ import type { LinkResolvers } from "./../../types.generated";
  */
 export const Link: LinkResolvers = {
   /* Implement Link resolver logic here */
-  comments: async (_parent, _arg, _ctx) => {
-    /* Link.comments resolver is required because Link.comments exists but LinkMapper.comments does not */
+  comments: async (parent, _arg, context) => {
+    const comments = await context.prisma.comment.findMany({
+      orderBy: { createdAt: "desc" },
+      where: {
+        linkId: parent.id,
+      },
+    });
+    if (comments.length === 0) {
+      return null;
+    }
+    return comments;
   },
 };
