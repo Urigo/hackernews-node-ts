@@ -1,8 +1,10 @@
 import type { QueryResolvers } from "./../../../types.generated";
 export const comment: NonNullable<QueryResolvers["comment"]> = async (
   _parent,
-  _arg,
-  _ctx,
+  args,
+  context,
 ) => {
-  /* Implement Query.comment resolver logic here */
+  return context.prisma.comment.findUnique({
+    where: { id: parseInt(args.id) },
+  });
 };
