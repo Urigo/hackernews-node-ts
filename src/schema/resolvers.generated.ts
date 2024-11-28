@@ -6,6 +6,7 @@ import { info as Query_info } from "./base/resolvers/Query/info";
 import { link as Query_link } from "./base/resolvers/Query/link";
 import { postCommentOnLink as Mutation_postCommentOnLink } from "./base/resolvers/Mutation/postCommentOnLink";
 import { postLink as Mutation_postLink } from "./base/resolvers/Mutation/postLink";
+import { Comment } from "./base/resolvers/Comment";
 import { Link } from "./base/resolvers/Link";
 export const resolvers: Resolvers = {
   Query: {
@@ -19,5 +20,6 @@ export const resolvers: Resolvers = {
     postLink: Mutation_postLink,
   },
 
+  Comment: Comment,
   Link: Link,
 };
