@@ -4,5 +4,5 @@ export const info: NonNullable<QueryResolvers["info"]> = async (
   _arg,
   _ctx,
 ) => {
-  /* Implement Query.info resolver logic here */
+  return `This is the API of a Hackernews Clone`;
 };
