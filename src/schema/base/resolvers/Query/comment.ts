@@ -5,6 +5,6 @@ export const comment: NonNullable<QueryResolvers["comment"]> = async (
   context,
 ) => {
   return context.prisma.comment.findUnique({
-    where: { id: parseInt(args.id) }
-  })
+    where: { id: parseInt(args.id) },
+  });
 };
