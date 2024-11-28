@@ -1,8 +1,10 @@
 import type { QueryResolvers } from "./../../../types.generated";
 export const link: NonNullable<QueryResolvers["link"]> = async (
   _parent,
-  _arg,
-  _ctx,
+  args,
+  context,
 ) => {
-  /* Implement Query.link resolver logic here */
+  return context.prisma.link.findUnique({
+    where: { id: parseInt(args.id) },
+  });
 };
