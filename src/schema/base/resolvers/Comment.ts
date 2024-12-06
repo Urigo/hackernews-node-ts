@@ -12,7 +12,7 @@ export const Comment: CommentResolvers = {
   /* Implement Comment resolver logic here */
   createdAt: ({ createdAt }, _arg, _ctx) => {
     /* Comment.createdAt resolver is required because Comment.createdAt and CommentMapper.createdAt are not compatible */
-    return createdAt;
+    return createdAt.toISOString();
   },
   link(parent, _arg, context) {
     return context.prisma.link.findUniqueOrThrow({
