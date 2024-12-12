@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from "graphql";
-import { LinkMapper } from "./base/schema.mappers";
+import { CommentMapper, LinkMapper } from "./base/schema.mappers";
 import { GraphQLContext } from "../context";
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
@@ -21,7 +21,6 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: NonNullable<T[P]>;
 };
@@ -195,9 +194,7 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Comment: ResolverTypeWrapper<
-    Omit<Comment, "link"> & { link: ResolversTypes["Link"] }
-  >;
+  Comment: ResolverTypeWrapper<CommentMapper>;
   String: ResolverTypeWrapper<Scalars["String"]["output"]>;
   ID: ResolverTypeWrapper<Scalars["ID"]["output"]>;
   Link: ResolverTypeWrapper<LinkMapper>;
@@ -209,7 +206,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Comment: Omit<Comment, "link"> & { link: ResolversParentTypes["Link"] };
+  Comment: CommentMapper;
   String: Scalars["String"]["output"];
   ID: Scalars["ID"]["output"];
   Link: LinkMapper;
